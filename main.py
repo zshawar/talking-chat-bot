@@ -30,7 +30,7 @@ scrollbar.pack(side=RIGHT)
 
 # add text area to center frame and add scroll bar to text area
 textarea = Text(centerFrame, font=('arial', 16, 'bold'), fg='#f3c9ff', height='11', width='35', bg='#8C52FF',
-                yscrollcommand=scrollbar.set)
+                yscrollcommand=scrollbar.set, wrap='word')
 textarea.pack(side=LEFT)
 
 # configure scroll bar buttons
@@ -39,6 +39,11 @@ scrollbar.config(command=textarea.yview)
 # add entry field for question
 questionField = Entry(root, font=('arial', 16, 'bold'), fg='#f3c9ff', bg='#8C52FF', width='37')
 questionField.pack(pady=15)
+
+# create ask button
+askPic = PhotoImage(file='sendBtn.PNG')
+askButton = Button(root, image=askPic, bg='#f3c9ff')
+askButton.pack(pady='5')
 
 # use mainloop to keep window continuously on screen
 root.mainloop()
