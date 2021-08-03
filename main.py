@@ -1,4 +1,27 @@
 from tkinter import *
+from chatterbot import ChatBot
+from chatterbot.trainers import ListTrainer
+import os
+
+# create chat bot and trainer objects
+bot = ChatBot('Bot')
+trainer = ListTrainer(bot)
+
+# open files to train the bot
+for files in os.listdir('english/'):
+    data = open('english/' + files, 'r', encoding='utf-8').readlines()
+
+    # send the data file to the train method and trainer object to train bot
+    trainer.train(data)
+
+# function for bot reply
+def botReply():
+    question = questionField.get()
+    answer = bot.get_response(question)
+    textarea.insert(END, 'You: ' + question + '\n\n')
+    # convert answer statement to str
+    textarea.insert(END, 'Bot: ' + str(answer) + '\n\n')
+    questionField.delete(0, END)
 
 # create window
 root=Tk()
@@ -42,7 +65,7 @@ questionField.pack(pady=15)
 
 # create ask button
 askPic = PhotoImage(file='sendBtn.PNG')
-askButton = Button(root, image=askPic, bg='#f3c9ff')
+askButton = Button(root, image=askPic, bg='#f3c9ff', command=botReply)
 askButton.pack(pady='5')
 
 # use mainloop to keep window continuously on screen
