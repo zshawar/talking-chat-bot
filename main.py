@@ -1,18 +1,32 @@
 from tkinter import *
 from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
 from chatterbot.trainers import ListTrainer
 import os
 
 # create chat bot and trainer objects
-bot = ChatBot('Bot')
-trainer = ListTrainer(bot)
+bot = ChatBot(
+    'Bot',
+    storage_adapter='chatterbot.storage.SQLStorageAdapter',
+    logic_adapters=[
+        'chatterbot.logic.MathematicalEvaluation',
+        'chatterbot.logic.TimeLogicAdapter',
+        'chatterbot.logic.BestMatch'
+    ]
+)
+# trainer = ListTrainer(bot)
 
-# open files to train the bot
-for files in os.listdir('english/'):
-    data = open('english/' + files, 'r', encoding='utf-8').readlines()
+# use english files to train the bot
+# for files in os.listdir('english/'):
+#     data = open('english/' + files, 'r', encoding='utf-8').readlines()
+#
+#     # send the data file to the train method and trainer object to train bot
+#     trainer.train(data)
 
-    # send the data file to the train method and trainer object to train bot
-    trainer.train(data)
+trainer = ChatterBotCorpusTrainer(bot)
+
+# train bot using chatterbot english library
+trainer.train("chatterbot.corpus.english")
 
 # function for bot reply
 def botReply():
@@ -64,7 +78,7 @@ questionField = Entry(root, font=('arial', 16, 'bold'), fg='#f3c9ff', bg='#8C52F
 questionField.pack(pady=15)
 
 # create ask button
-askPic = PhotoImage(file='sendBtn.PNG')
+askPic = PhotoImage(file='sendButton.PNG')
 askButton = Button(root, image=askPic, bg='#f3c9ff', command=botReply)
 askButton.pack(pady='5')
 
